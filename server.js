@@ -30,7 +30,7 @@ async function getAllTasks(){
 
 async function getTask(id){
     try{
-        let [result] = await pool.query(`SELECT * FROM tasks WHERE TaskID = ?`, [id])
+        let [result] = await pool.query(`SELECT * FROM tasks WHERE id = ?`, [id])
         console.log(result);
         return result;
     }catch(err){
@@ -42,7 +42,7 @@ async function getTask(id){
 
 async function postTask(taskName, taskDescription){
     try{
-        let [result] = await pool.query(`INSERT INTO tasks (TaskName, TaskDescription) 
+        let [result] = await pool.query(`INSERT INTO tasks (taskname, taskdescription) 
             VALUES (?, ?)`,
             [taskName,
             taskDescription
@@ -57,7 +57,7 @@ async function postTask(taskName, taskDescription){
 
 async function deleteTaskByID(id){
     try{
-        let [result] = await pool.query(`DELETE FROM tasks WHERE TaskID = ?`, [id]);
+        let [result] = await pool.query(`DELETE FROM tasks WHERE id = ?`, [id]);
         console.log(result)
     }catch(err){
         console.log(err)
@@ -78,7 +78,7 @@ async function updateTaskCompleteByID(id){
         let [result] = await pool.query(`
             UPDATE tasks 
             SET isComplete = true 
-            WHERE TaskID = ?`, [id]);
+            WHERE id = ?`, [id]);
         console.log(result)
     }catch(err){
         console.log(err)
@@ -101,7 +101,7 @@ app.get('/', (req, res) => {
 app.get('/api/tasks', async (req, res) => {
     const tasks = await getAllTasks();
     // res.send('Hello from api/tasks');
-    res.send(tasks);
+    res.json(tasks);
 })
 
 //get a task
