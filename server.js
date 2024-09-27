@@ -62,6 +62,15 @@ async function deleteTaskByID(id){
     }
 }
 
+async function deleteAllTasks(){
+    try{
+        let result = await pool.query(`DELETE FROM tasks`);
+        console.log(result)
+    }catch(err){
+        console.log(err)
+    }
+}
+
 async function updateTaskCompleteByID(id){
     try{
         let [result] = await pool.query(`
@@ -80,6 +89,7 @@ async function updateTaskCompleteByID(id){
 // postTask("Buy groceries","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." )
 // getAllTasks();
 // getTask(1);
+// deleteAllTasks();
 
 app.get('/', (req, res) => {
     res.send('Hello from the GET server');
@@ -110,6 +120,12 @@ app.delete('/api/tasks/:id', async (req, res) => {
     const task = await deleteTaskByID(req.params.id);
     // res.send('Hello from delete task');
     res.send(task);
+})
+
+//delete all tasks
+app.delete('/api/tasks', async (req, res) => {
+    const result = await deleteAllTasks();
+    res.send(result);
 })
 
 //post a task
