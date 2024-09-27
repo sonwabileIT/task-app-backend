@@ -1,8 +1,26 @@
 import express from 'express';
 import 'dotenv/config';
+import mysql from 'mysql2/promise';
 
 const PORT = process.env.PORT || 5000;
 const app = express();
+
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'tasks_DB'
+})
+
+const conn = await pool.getConnection();
+
+const [result] = await conn.query("SELECT * FROM tasks");
+
+console.log(result)
+
+// pool.connect(() => {
+//     console.log('MySQL Connected...')
+// })
 
 app.get('/', (req, res) => {
     res.send('Hello from the GET server');
@@ -21,6 +39,10 @@ app.patch('/api/tasks/[0-9]', (req, res) => {
 //delete a complete
 app.delete('/api/tasks/[0-9]', (req, res) => {
     res.send('Hello from delete task')
+})
+
+app.post('api/tasks', (req, res) => {
+    res.send('Hello from post task')
 })
     
 
