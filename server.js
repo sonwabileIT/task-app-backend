@@ -5,6 +5,39 @@ import mysql from 'mysql2/promise';
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'tasks_DB'
+})
+
+async function getAllTasks(){
+    try{
+        let [result] = await pool.query('SELECT * FROM tasks');
+        console.log(result);
+        return result;
+    }catch(err){
+        console.log(err);
+    }
+    
+    // return result;
+}
+
+async function getTask(id){
+    try{
+        let [result] = await pool.query(`SELECT * FROM tasks WHERE TaskID = ${id}`)
+        console.log(result);
+        return result;
+    }catch(err){
+        console.log(err);
+    }
+    
+}
+
+getAllTasks();
+getTask(1);
+
 app.get('/', (req, res) => {
     res.send('Hello from the GET server');
 })
