@@ -40,12 +40,13 @@ async function getTask(id){
 }
 
 
-async function postTask(taskName, taskDescription){
+async function postTask(taskName, taskDescription, isComplete){
     try{
-        let [result] = await pool.query(`INSERT INTO tasks (taskname, taskdescription) 
-            VALUES (?, ?)`,
+        let [result] = await pool.query(`INSERT INTO tasks (taskname, taskdescription, isComplete) 
+            VALUES (?, ?, ?)`,
             [taskName,
-            taskDescription
+            taskDescription,
+            isComplete
             ]
          );
 
@@ -133,9 +134,9 @@ app.delete('/api/tasks', async (req, res) => {
 //post a task
 app.post('/api/tasks', async (req, res) => {
     
-    const {taskName, taskDescription} = req.body;
-    const task = await postTask(taskName, taskDescription);
-    res.send(task);
+    const {taskname, taskdescription, isComplete} = req.body;
+    const task = await postTask(taskname, taskdescription, isComplete);
+    res.status(201).send(task);
 })
     
 
