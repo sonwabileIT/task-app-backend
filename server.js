@@ -5,23 +5,6 @@ import mysql from 'mysql2/promise';
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'tasks_DB'
-})
-
-const conn = await pool.getConnection();
-
-const [result] = await conn.query("SELECT * FROM tasks");
-
-console.log(result)
-
-// pool.connect(() => {
-//     console.log('MySQL Connected...')
-// })
-
 app.get('/', (req, res) => {
     res.send('Hello from the GET server');
 })
