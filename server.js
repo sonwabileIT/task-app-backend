@@ -18,7 +18,7 @@ const pool = mysql.createPool({
 
 async function getAllTasks(){
     try{
-        let [result] = await pool.query('SELECT * FROM tasks');
+        let [result] = await pool.execute('SELECT * FROM tasks');
         console.log(result);
         return result;
     }catch(err){
@@ -30,7 +30,7 @@ async function getAllTasks(){
 
 async function getTask(id){
     try{
-        let [result] = await pool.query(`SELECT * FROM tasks WHERE id = ?`, [id])
+        let [result] = await pool.execute(`SELECT * FROM tasks WHERE id = ?`, [id])
         console.log(result);
         return result;
     }catch(err){
@@ -42,7 +42,7 @@ async function getTask(id){
 
 async function postTask(taskName, taskDescription, isComplete){
     try{
-        let [result] = await pool.query(`INSERT INTO tasks (taskname, taskdescription, isComplete) 
+        let [result] = await pool.execute(`INSERT INTO tasks (taskname, taskdescription, isComplete) 
             VALUES (?, ?, ?)`,
             [taskName,
             taskDescription,
@@ -58,7 +58,7 @@ async function postTask(taskName, taskDescription, isComplete){
 
 async function deleteTaskByID(id){
     try{
-        let [result] = await pool.query(`DELETE FROM tasks WHERE id = ?`, [id]);
+        let [result] = await pool.execute(`DELETE FROM tasks WHERE id = ?`, [id]);
         console.log(result)
     }catch(err){
         console.log(err)
@@ -67,7 +67,7 @@ async function deleteTaskByID(id){
 
 async function deleteAllTasks(){
     try{
-        let result = await pool.query(`DELETE FROM tasks`);
+        let result = await pool.execute(`DELETE FROM tasks`);
         console.log(result)
     }catch(err){
         console.log(err)
@@ -76,7 +76,7 @@ async function deleteAllTasks(){
 
 async function updateTaskCompleteByID(id){
     try{
-        let [result] = await pool.query(`
+        let [result] = await pool.execute(`
             UPDATE tasks 
             SET isComplete = true 
             WHERE id = ?`, [id]);
