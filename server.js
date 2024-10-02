@@ -3,7 +3,7 @@ import 'dotenv/config';
 import mysql from 'mysql2/promise';
 import cors from 'cors'
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 const app = express();
 
 app.use(express.json())
@@ -24,8 +24,6 @@ async function getAllTasks(){
     }catch(err){
         console.log(err);
     }
-    
-    // return result;
 }
 
 async function getTask(id){
@@ -36,9 +34,7 @@ async function getTask(id){
     }catch(err){
         console.log(err);
     }
-    
 }
-
 
 async function postTask(taskName, taskDescription, isComplete){
     try{
@@ -86,14 +82,6 @@ async function updateTaskCompleteByID(id){
     }
 }
 
-
-// deleteTaskByID(2);
-// updateTaskCompleteByID(4);
-// postTask("Buy groceries","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." )
-// getAllTasks();
-// getTask(1);
-// deleteAllTasks();
-
 app.get('/', (req, res) => {
     res.send('Hello from the GET server');
 })
@@ -101,7 +89,6 @@ app.get('/', (req, res) => {
 //get all tasks
 app.get('/api/tasks', async (req, res) => {
     const tasks = await getAllTasks();
-    // res.send('Hello from api/tasks');
     res.json(tasks);
 })
 
@@ -114,14 +101,6 @@ app.get('/api/tasks/:id', async (req, res) => {
 //mark a task complete
 app.patch('/api/tasks/:id', async (req, res) => {
     const task = await updateTaskCompleteByID(req.params.id);
-    // res.send('Hello from patch');
-    res.send(task);
-})
-
-//delete a complete
-app.delete('/api/tasks/:id', async (req, res) => {
-    const task = await deleteTaskByID(req.params.id);
-    // res.send('Hello from delete task');
     res.send(task);
 })
 
@@ -131,16 +110,19 @@ app.delete('/api/tasks', async (req, res) => {
     res.send(result);
 })
 
+//delete a complete
+app.delete('/api/tasks/:id', async (req, res) => {
+    const task = await deleteTaskByID(req.params.id);
+    res.send(task);
+})
+
 //post a task
 app.post('/api/tasks', async (req, res) => {
-    
     const {taskname, taskdescription, isComplete} = req.body;
     const task = await postTask(taskname, taskdescription, isComplete);
     res.status(201).send(task);
 })
     
-
-
 app.listen(PORT, () => {
     console.log(`Server starting from port: ${PORT}`);
 })
