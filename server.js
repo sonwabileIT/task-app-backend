@@ -3,17 +3,17 @@ import 'dotenv/config';
 import mysql from 'mysql2/promise';
 import cors from 'cors'
 
-const PORT = process.env.PORT;
+const PORT = process.env.MYSQLPORT;
 const app = express();
 
 app.use(express.json())
 app.use(cors())
 
 const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE
 })
 
 async function getAllTasks(){
