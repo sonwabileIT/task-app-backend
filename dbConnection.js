@@ -6,6 +6,7 @@ const caCert = process.env.DB_CA_CERT;      //remove when testing
 export const pool = mysql.createPool({
     host: process.env.MYSQLHOST,
     user: process.env.MYSQLUSER,
+    port: process.env.MYSQLPORT,
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
     ssl: {                                  //remove when testing
